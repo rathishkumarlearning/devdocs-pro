@@ -3,11 +3,13 @@ import { api } from '../services/api';
 import type { SearchResult } from '../services/api';
 
 interface Props {
+  open: boolean;
   onNavigate: (id: string) => void;
   onClose: () => void;
 }
 
-export default function SearchModal({ onNavigate, onClose }: Props) {
+export default function SearchModal({ open, onNavigate, onClose }: Props) {
+  if (!open) return null;
   const [query, setQuery]     = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
