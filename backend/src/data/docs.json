@@ -1,0 +1,8 @@
+[
+  { "id":"introduction",  "title":"Introduction",     "section":"Getting Started", "description":"Welcome to DevDocs Pro. Up and running in 3 minutes.", "tags":["overview","intro","start"], "order":1 },
+  { "id":"quickstart",    "title":"Quickstart",       "section":"Getting Started", "description":"Ship your first docs in 3 minutes.",                   "tags":["install","setup","deploy"], "order":2 },
+  { "id":"authentication","title":"Authentication",   "section":"Getting Started", "description":"Bearer tokens, API keys, and OAuth.",                  "tags":["auth","bearer","security"], "order":3 },
+  { "id":"api-overview",  "title":"API Overview",     "section":"API Reference",   "description":"Clean REST API reference with live examples.",          "tags":["api","rest","endpoints"],   "order":4 },
+  { "id":"sdk-ts",        "title":"TypeScript SDK",   "section":"SDKs",            "description":"Fully typed SDK, zero config.",                        "tags":["sdk","typescript","npm"],   "order":5 },
+  { "id":"guide-deploy",  "title":"Deployment",       "section":"Guides",          "description":"Deploy to Vercel, Netlify, or self-hosted.",            "tags":["deploy","vercel","ci"],     "order":6 }
+]
