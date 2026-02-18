@@ -3,6 +3,7 @@ import Sidebar from './components/Sidebar';
 import Introduction from './pages/Introduction';
 import Quickstart from './pages/Quickstart';
 import ApiReference from './pages/ApiReference';
+import SearchModal from './components/SearchModal';
 import { NAV } from './data/docs';
 import { COPY } from './data/copy';
 
@@ -104,7 +105,7 @@ function TOC({ activePage }: { activePage:string }) {
 }
 
 /* ── TopNav ──────────────────────────────────────────────── */
-function TopNav({ menuOpen, onMenu, theme, onTheme }: { menuOpen:boolean; onMenu:()=>void; theme:string; onTheme:()=>void }) {
+function TopNav({ menuOpen, onMenu, theme, onTheme, onSearchOpen }: { menuOpen:boolean; onMenu:()=>void; theme:string; onTheme:()=>void; onSearchOpen:()=>void }) {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const h = () => setScrolled(window.scrollY > 10);
@@ -122,9 +123,10 @@ function TopNav({ menuOpen, onMenu, theme, onTheme }: { menuOpen:boolean; onMenu
         <span>DevDocs Pro</span>
       </a>
       <div style={{ width:1, height:20, background:'var(--border)', flexShrink:0, display:'none' }} className="nav-divider" />
-      <div className="nav-search" style={{ display:'none' }} id="navSearch">
+      <div className="nav-search" style={{ display:'none', cursor:'pointer' }} id="navSearch" onClick={onSearchOpen}>
         <svg width="13" height="13" fill="none" stroke="var(--text3)" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input type="text" placeholder="Search docs…" />
+        <input type="text" placeholder="Search docs…" readOnly style={{ cursor:'pointer' }} />
+        <span style={{ fontSize:10, color:'var(--text3)', flexShrink:0, fontFamily:'JetBrains Mono,monospace' }}>⌘K</span>
       </div>
       <div className="nav-actions">
         <button className="nav-icon-btn" onClick={onTheme} title="Toggle theme">
@@ -198,6 +200,7 @@ function Breadcrumb({ activePage }: { activePage:string }) {
 export default function App() {
   const [activePage, setActivePage] = useState('introduction');
   const [menuOpen, setMenuOpen]     = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [theme, setTheme]           = useState<'dark'|'light'>(() =>
     (localStorage.getItem('theme') as 'dark'|'light') || 'dark'
   );
@@ -225,6 +228,15 @@ export default function App() {
     return () => { window.removeEventListener('resize', h); window.removeEventListener('resize', applyWidth); };
   }, []);
 
+  // ⌘K to open search
+  useEffect(() => {
+    const h = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); setSearchOpen(o => !o); }
+    };
+    window.addEventListener('keydown', h);
+    return () => window.removeEventListener('keydown', h);
+  }, []);
+
   const navigate = useCallback((id: string) => {
     setActivePage(id);
     window.scrollTo({ top:0, behavior:'smooth' });
@@ -245,7 +257,8 @@ export default function App() {
 
   return (
     <div data-theme={theme}>
-      <TopNav menuOpen={menuOpen} onMenu={() => setMenuOpen(o=>!o)} theme={theme} onTheme={() => setTheme(t=>t==='dark'?'light':'dark')} />
+      {searchOpen && <SearchModal onNavigate={navigate} onClose={() => setSearchOpen(false)} />}
+      <TopNav menuOpen={menuOpen} onMenu={() => setMenuOpen(o=>!o)} theme={theme} onTheme={() => setTheme(t=>t==='dark'?'light':'dark')} onSearchOpen={() => setSearchOpen(true)} />
       <ProgressBar />
 
       <div className="layout">
