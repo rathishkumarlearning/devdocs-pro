@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+<title>DevDocs Pro — Documentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════════ */
+:root{
+  --bg:        #0a0a0f;
+  --bg-card:   #111118;
+  --bg-hover:  #16161e;
+  --sidebar:   #0d0d14;
+  --border:    rgba(255,255,255,.07);
+  --border-hi: rgba(255,255,255,.14);
+  --accent:    #2997ff;
+  --accent-s:  #5e5ce6;
+  --accent-e:  #bf5af2;
+  --success:   #30d158;
+  --warning:   #ffd60a;
+  --danger:    #ff453a;
+  --text:      #f5f5f7;
+  --text-2:    rgba(255,255,255,.55);
+  --text-3:    rgba(255,255,255,.3);
+  --code-bg:   #1c1c24;
+  --nav-h:     54px;
+  --sb-w:      268px;
+  --toc-w:     220px;
+  --r:         10px;
+}
+[data-theme="light"]{
+  --bg:        #ffffff;
+  --bg-card:   #f5f5f9;
+  --bg-hover:  #ebebf5;
+  --sidebar:   #f0f0f8;
+  --border:    rgba(0,0,0,.08);
+  --border-hi: rgba(0,0,0,.14);
+  --text:      #1d1d1f;
+  --text-2:    rgba(0,0,0,.55);
+  --text-3:    rgba(0,0,0,.3);
+  --code-bg:   #1c1c24;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100vh;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+a{color:inherit;text-decoration:none}
+
+/* ═══════════════════════════════════════════════
+   TOP NAV
+═══════════════════════════════════════════════ */
+.topnav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  height:var(--nav-h);
+  background:rgba(10,10,15,.82);
+  backdrop-filter:saturate(180%) blur(22px);
+  -webkit-backdrop-filter:saturate(180%) blur(22px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;
+  padding:0 18px;
+}
+[data-theme="light"] .topnav{background:rgba(255,255,255,.82)}
+
+.nav-menu-btn{
+  width:34px;height:34px;border-radius:8px;
+  background:transparent;border:1px solid var(--border);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  cursor:pointer;flex-shrink:0;transition:all .2s;
+}
+.nav-menu-btn:hover{background:var(--bg-hover)}
+.nav-menu-btn span{
+  display:block;width:14px;height:1.5px;
+  background:var(--text-2);border-radius:2px;transition:all .3s;
+}
+.nav-menu-btn.open span:first-child{transform:translateY(5.5px) rotate(45deg)}
+.nav-menu-btn.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.nav-menu-btn.open span:last-child{transform:translateY(-5.5px) rotate(-45deg)}
+
+.nav-logo{
+  display:flex;align-items:center;gap:8px;flex-shrink:0;
+  font-weight:700;font-size:15px;letter-spacing:-.02em;
+}
+.nav-logo-icon{
+  width:26px;height:26px;border-radius:7px;
+  background:linear-gradient(135deg,var(--accent),var(--accent-s));
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;
+}
+.nav-logo-name{
+  background:linear-gradient(90deg,var(--text) 0%,var(--text-2) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.nav-divider{width:1px;height:20px;background:var(--border);flex-shrink:0}
+
+/* version badge */
+.nav-version{
+  font-size:11px;font-weight:500;
+  background:rgba(41,151,255,.12);color:var(--accent);
+  border:1px solid rgba(41,151,255,.25);
+  border-radius:980px;padding:3px 10px;flex-shrink:0;
+  display:none;
+}
+
+/* search */
+.nav-search{
+  flex:1;max-width:440px;
+  display:flex;align-items:center;gap:8px;
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:8px;padding:7px 12px;
+  cursor:text;transition:all .2s;
+}
+.nav-search:hover{border-color:var(--border-hi)}
+.nav-search:focus-within{
+  border-color:rgba(41,151,255,.45);
+  box-shadow:0 0 0 3px rgba(41,151,255,.1);
+}
+.nav-search svg{color:var(--text-3);flex-shrink:0}
+.nav-search input{
+  flex:1;background:none;border:none;outline:none;
+  font:500 13px/1 'Inter',sans-serif;color:var(--text);min-width:0;
+}
+.nav-search input::placeholder{color:var(--text-3)}
+.nav-search-kbd{
+  display:flex;gap:3px;flex-shrink:0;
+}
+.kbd{
+  background:var(--bg-hover);border:1px solid var(--border);
+  border-radius:4px;padding:1px 5px;
+  font:500 10px/1.4 'JetBrains Mono',monospace;color:var(--text-3);
+}
+
+.nav-right{display:flex;align-items:center;gap:6px;margin-left:auto}
+.icon-btn{
+  width:32px;height:32px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  background:transparent;border:1px solid var(--border);
+  cursor:pointer;font-size:14px;transition:all .2s;
+  color:var(--text-2);
+}
+.icon-btn:hover{background:var(--bg-hover);color:var(--text)}
+.nav-cta{
+  font-size:12px;font-weight:600;
+  background:var(--accent);color:#fff;
+  border-radius:980px;padding:6px 14px;
+  transition:all .2s;display:none;white-space:nowrap;
+}
+.nav-cta:hover{background:#0077ed;box-shadow:0 4px 16px rgba(41,151,255,.35)}
+
+/* ═══════════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════════ */
+.layout{
+  display:flex;
+  padding-top:var(--nav-h);
+  min-height:100vh;
+}
+
+/* ═══════════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════════ */
+.sidebar{
+  width:var(--sb-w);flex-shrink:0;
+  background:var(--sidebar);
+  border-right:1px solid var(--border);
+  position:fixed;top:var(--nav-h);left:0;bottom:0;
+  overflow-y:auto;overflow-x:hidden;
+  padding:24px 12px 40px;
+  scrollbar-width:thin;
+  transform:translateX(-100%);
+  transition:transform .28s cubic-bezier(.16,1,.3,1);
+  z-index:400;
+}
+.sidebar.open{transform:translateX(0)}
+.sidebar-overlay{
+  display:none;position:fixed;inset:0;z-index:399;
+  background:rgba(0,0,0,.55);backdrop-filter:blur(2px);
+}
+.sidebar-overlay.visible{display:block}
+
+.sb-section{margin-bottom:8px}
+.sb-section-label{
+  font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--text-3);padding:10px 10px 6px;
+  display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;border-radius:7px;transition:all .2s;user-select:none;
+}
+.sb-section-label:hover{color:var(--text-2);background:var(--bg-hover)}
+.sb-section-label svg{transition:transform .2s;flex-shrink:0}
+.sb-section.collapsed .sb-section-label svg{transform:rotate(-90deg)}
+.sb-section.collapsed .sb-links{display:none}
+
+.sb-links{display:flex;flex-direction:column;gap:1px;padding-bottom:4px}
+.sb-link{
+  display:flex;align-items:center;gap:8px;
+  font-size:13px;font-weight:450;color:var(--text-2);
+  padding:7px 10px;border-radius:7px;
+  transition:all .18s;cursor:pointer;
+  border:none;background:none;font-family:'Inter',sans-serif;
+  text-align:left;width:100%;
+}
+.sb-link:hover{color:var(--text);background:var(--bg-hover)}
+.sb-link.active{
+  color:var(--accent);background:rgba(41,151,255,.1);
+  font-weight:500;
+}
+.sb-link.active::before{
+  content:'';width:2px;height:16px;border-radius:2px;
+  background:var(--accent);flex-shrink:0;margin-left:-2px;
+}
+.sb-badge{
+  margin-left:auto;font-size:10px;font-weight:600;
+  padding:2px 7px;border-radius:980px;flex-shrink:0;
+}
+.badge-new{background:rgba(41,151,255,.15);color:var(--accent)}
+.badge-beta{background:rgba(191,90,242,.15);color:#bf5af2}
+
+/* ═══════════════════════════════════════════════
+   MAIN CONTENT
+═══════════════════════════════════════════════ */
+.main{
+  flex:1;min-width:0;
+  padding:0;
+}
+.content-wrap{
+  max-width:780px;margin:0 auto;
+  padding:48px 24px 80px;
+}
+
+/* breadcrumb */
+.breadcrumb{
+  display:flex;align-items:center;gap:6px;
+  font-size:12px;color:var(--text-3);margin-bottom:28px;
+  flex-wrap:wrap;
+}
+.breadcrumb a{transition:color .2s}
+.breadcrumb a:hover{color:var(--text-2)}
+.breadcrumb .sep{font-size:10px}
+
+/* page header */
+.page-header{margin-bottom:40px}
+.page-label{
+  font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:10px;
+}
+.page-title{
+  font-size:clamp(28px,5vw,42px);font-weight:700;
+  letter-spacing:-.03em;line-height:1.1;margin-bottom:16px;
+}
+.page-desc{
+  font-size:clamp(15px,2.5vw,18px);color:var(--text-2);
+  line-height:1.65;max-width:580px;font-weight:400;
+}
+
+/* time + contributors */
+.page-meta{
+  display:flex;align-items:center;gap:16px;
+  margin-top:16px;padding-top:16px;
+  border-top:1px solid var(--border);
+  flex-wrap:wrap;
+}
+.meta-item{
+  display:flex;align-items:center;gap:6px;
+  font-size:12px;color:var(--text-3);
+}
+
+/* ── PROSE ── */
+.prose{font-size:15px;line-height:1.75;color:var(--text-2)}
+.prose h2{
+  font-size:22px;font-weight:700;letter-spacing:-.02em;
+  color:var(--text);margin:52px 0 16px;
+  padding-bottom:10px;border-bottom:1px solid var(--border);
+}
+.prose h3{
+  font-size:17px;font-weight:650;letter-spacing:-.01em;
+  color:var(--text);margin:36px 0 12px;
+}
+.prose h4{
+  font-size:14px;font-weight:600;text-transform:uppercase;
+  letter-spacing:.07em;color:var(--text-3);margin:28px 0 10px;
+}
+.prose p{margin-bottom:16px}
+.prose a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.prose a:hover{text-decoration-thickness:2px}
+.prose strong{color:var(--text);font-weight:600}
+.prose code{
+  font-family:'JetBrains Mono',monospace;font-size:.82em;
+  background:var(--code-bg);color:#bf5af2;
+  padding:2px 6px;border-radius:5px;
+  border:1px solid rgba(255,255,255,.08);
+}
+.prose ul,.prose ol{padding-left:22px;margin-bottom:16px}
+.prose li{margin-bottom:8px;padding-left:4px}
+.prose ul li::marker{color:var(--accent)}
+
+/* ── CODE BLOCK ── */
+.code-block{
+  background:var(--code-bg);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;overflow:hidden;margin:24px 0;
+}
+.code-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px;
+  background:rgba(255,255,255,.03);
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.code-dots{display:flex;gap:6px}
+.code-dot{width:10px;height:10px;border-radius:50%}
+.code-file{
+  font-size:11px;font-weight:500;color:var(--text-3);
+  font-family:'JetBrains Mono',monospace;
+}
+.code-lang{
+  font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:rgba(41,151,255,.7);
+}
+.copy-btn{
+  font-size:11px;font-weight:500;padding:4px 12px;border-radius:980px;
+  background:rgba(255,255,255,.06);color:var(--text-2);
+  border:1px solid rgba(255,255,255,.08);cursor:pointer;
+  font-family:'Inter',sans-serif;transition:all .2s;
+}
+.copy-btn:hover{background:rgba(255,255,255,.1);color:var(--text)}
+.code-block pre{
+  padding:20px 20px;overflow-x:auto;
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;line-height:1.9;color:#cdd6f4;
+  -webkit-overflow-scrolling:touch;
+}
+.line-nums{
+  padding:20px 0 20px 16px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;line-height:1.9;
+  color:rgba(255,255,255,.18);user-select:none;
+  border-right:1px solid rgba(255,255,255,.06);
+  text-align:right;
+}
+.code-table{display:flex}
+.code-table .code-block pre{padding-left:16px}
+
+/* tokens */
+.t-kw   {color:#cba6f7}
+.t-fn   {color:#89dceb}
+.t-str  {color:#a6e3a1}
+.t-num  {color:#fab387}
+.t-cm   {color:#6c7086;font-style:italic}
+.t-op   {color:#89b4fa}
+.t-cls  {color:#f9e2af}
+.t-ok   {color:#a6e3a1}
+.t-err  {color:#f38ba8}
+.t-bool {color:#f5c2e7}
+
+/* ── CALLOUTS ── */
+.callout{
+  display:flex;gap:14px;padding:16px 20px;border-radius:10px;
+  margin:24px 0;border:1px solid;
+}
+.callout-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.callout-body{font-size:14px;line-height:1.65}
+.callout-body strong{display:block;margin-bottom:4px;font-size:13px;font-weight:600;letter-spacing:.02em;text-transform:uppercase}
+.callout.note{background:rgba(41,151,255,.06);border-color:rgba(41,151,255,.2);color:rgba(255,255,255,.7)}
+.callout.tip{background:rgba(48,209,88,.06);border-color:rgba(48,209,88,.2);color:rgba(255,255,255,.7)}
+.callout.warning{background:rgba(255,214,10,.06);border-color:rgba(255,214,10,.2);color:rgba(255,255,255,.7)}
+.callout.danger{background:rgba(255,69,58,.06);border-color:rgba(255,69,58,.2);color:rgba(255,255,255,.7)}
+
+/* ── STEPS ── */
+.steps-list{display:flex;flex-direction:column;gap:0;margin:24px 0}
+.step-item{
+  display:flex;gap:20px;padding:20px 0;
+  border-bottom:1px solid var(--border);
+}
+.step-item:last-child{border-bottom:none}
+.step-badge{
+  width:30px;height:30px;flex-shrink:0;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:#fff;
+  background:linear-gradient(135deg,var(--accent),var(--accent-s));
+}
+.step-body h4{font-size:15px;font-weight:650;color:var(--text);margin-bottom:6px}
+.step-body p{font-size:13px;color:var(--text-2);line-height:1.6;margin:0}
+
+/* ── PARAM TABLE ── */
+.param-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:13px}
+.param-table th{
+  text-align:left;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text-3);padding:8px 14px;
+  border-bottom:1px solid var(--border);background:var(--bg-card);
+}
+.param-table th:first-child{border-radius:8px 0 0 0}
+.param-table th:last-child{border-radius:0 8px 0 0}
+.param-table td{
+  padding:11px 14px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;color:var(--text-2);
+}
+.param-table tr:last-child td{border-bottom:none}
+.param-table tr:hover td{background:var(--bg-hover)}
+.param-table code{font-family:'JetBrains Mono',monospace;font-size:.85em;color:var(--accent)}
+.param-type{font-family:'JetBrains Mono',monospace;font-size:.8em;color:#bf5af2}
+.param-required{
+  font-size:10px;font-weight:600;padding:2px 7px;border-radius:980px;
+  background:rgba(255,69,58,.12);color:#ff453a;
+}
+.param-optional{
+  font-size:10px;font-weight:600;padding:2px 7px;border-radius:980px;
+  background:rgba(255,255,255,.06);color:var(--text-3);
+}
+
+/* ── TABS ── */
+.tab-group{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:20px 0}
+.tab-bar{display:flex;background:var(--bg-card);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab-btn{
+  padding:10px 18px;font-size:13px;font-weight:500;
+  color:var(--text-3);border-bottom:2px solid transparent;margin-bottom:-1px;
+  cursor:pointer;background:none;border-top:none;border-left:none;border-right:none;
+  font-family:'Inter',sans-serif;transition:all .2s;white-space:nowrap;flex-shrink:0;
+}
+.tab-btn:hover{color:var(--text-2)}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+.tab-panel pre{border-radius:0;border:none;margin:0}
+
+/* ── API ENDPOINT CARD ── */
+.endpoint-card{
+  border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:20px 0;
+}
+.endpoint-header{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  padding:16px 20px;background:var(--bg-card);
+  border-bottom:1px solid var(--border);
+  cursor:pointer;user-select:none;
+}
+.method-pill{
+  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+  padding:4px 12px;border-radius:6px;flex-shrink:0;letter-spacing:.04em;
+}
+.GET   {background:rgba(48,209,88,.12) ;color:#30d158}
+.POST  {background:rgba(41,151,255,.12);color:#2997ff}
+.PUT   {background:rgba(255,214,10,.12);color:#ffd60a}
+.DELETE{background:rgba(255,69,58,.12) ;color:#ff453a}
+.PATCH {background:rgba(191,90,242,.12);color:#bf5af2}
+
+.endpoint-path{
+  font-family:'JetBrains Mono',monospace;font-size:14px;
+  color:var(--text);word-break:break-all;
+}
+.endpoint-desc{font-size:13px;color:var(--text-2);margin-left:auto}
+.endpoint-body{padding:20px}
+
+/* ── PREV/NEXT ── */
+.page-nav{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;
+  margin-top:64px;padding-top:32px;border-top:1px solid var(--border);
+}
+.page-nav-btn{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:10px;padding:16px 18px;
+  transition:all .2s;cursor:pointer;
+}
+.page-nav-btn:hover{border-color:var(--border-hi);background:var(--bg-hover)}
+.page-nav-btn.next{text-align:right}
+.page-nav-label{font-size:11px;color:var(--text-3);font-weight:500;margin-bottom:5px}
+.page-nav-title{font-size:14px;font-weight:600;color:var(--text)}
+
+/* ═══════════════════════════════════════════════
+   TABLE OF CONTENTS
+═══════════════════════════════════════════════ */
+.toc{
+  width:var(--toc-w);flex-shrink:0;
+  position:sticky;top:var(--nav-h);
+  height:calc(100vh - var(--nav-h));
+  overflow-y:auto;padding:32px 16px 32px 8px;
+  display:none;
+}
+.toc-title{
+  font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--text-3);margin-bottom:12px;padding-left:8px;
+}
+.toc-link{
+  display:block;font-size:12px;color:var(--text-3);
+  padding:5px 8px;border-radius:5px;border-left:2px solid transparent;
+  transition:all .18s;line-height:1.4;
+}
+.toc-link:hover{color:var(--text-2);background:var(--bg-hover)}
+.toc-link.active{color:var(--accent);border-left-color:var(--accent);background:rgba(41,151,255,.06)}
+.toc-link.h3{padding-left:18px;font-size:11.5px}
+
+/* ═══════════════════════════════════════════════
+   HERO SECTION (inside docs)
+═══════════════════════════════════════════════ */
+.doc-hero{
+  background:linear-gradient(135deg,rgba(41,151,255,.08) 0%,rgba(94,92,230,.06) 50%,rgba(191,90,242,.06) 100%);
+  border:1px solid var(--border);border-radius:16px;
+  padding:40px 36px;margin-bottom:40px;
+  position:relative;overflow:hidden;
+}
+.doc-hero::before{
+  content:'';position:absolute;top:-50%;right:-20%;
+  width:60%;height:200%;
+  background:radial-gradient(ellipse at center,rgba(41,151,255,.1) 0%,transparent 60%);
+  pointer-events:none;
+}
+.doc-hero-eyebrow{
+  font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:12px;
+}
+.doc-hero h1{
+  font-size:clamp(26px,4vw,38px);font-weight:800;
+  letter-spacing:-.03em;line-height:1.1;margin-bottom:14px;
+}
+.doc-hero p{font-size:16px;color:var(--text-2);line-height:1.65;max-width:520px;margin-bottom:24px}
+.doc-hero-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--accent);color:#fff;
+  font-size:14px;font-weight:600;
+  padding:10px 20px;border-radius:980px;transition:all .2s;
+}
+.btn-primary:hover{background:#0077ed;box-shadow:0 6px 20px rgba(41,151,255,.35);transform:translateY(-1px)}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--bg-hover);color:var(--text-2);
+  font-size:14px;font-weight:500;
+  padding:10px 20px;border-radius:980px;
+  border:1px solid var(--border);transition:all .2s;
+}
+.btn-secondary:hover{border-color:var(--border-hi);color:var(--text)}
+
+/* ── QUICK LINKS GRID ── */
+.quick-grid{
+  display:grid;gap:10px;
+  grid-template-columns:1fr;margin:32px 0;
+}
+.quick-card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:10px;
+  padding:18px 20px;transition:all .25s;cursor:pointer;
+  display:flex;align-items:flex-start;gap:14px;
+}
+.quick-card:hover{border-color:var(--border-hi);transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.quick-card-icon{
+  width:38px;height:38px;border-radius:9px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+}
+.quick-card h3{font-size:14px;font-weight:650;margin-bottom:4px;letter-spacing:-.01em}
+.quick-card p{font-size:12px;color:var(--text-3);line-height:1.5}
+
+/* ── RESPONSE PREVIEW ── */
+.response-block{
+  background:#0d1117;border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;overflow:hidden;margin:16px 0;
+}
+.response-status{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 16px;background:rgba(48,209,88,.05);
+  border-bottom:1px solid rgba(48,209,88,.12);
+  font-size:12px;font-weight:600;
+}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--success)}
+.status-code{color:var(--success)}
+.response-block pre{
+  padding:16px 20px;font-family:'JetBrains Mono',monospace;
+  font-size:12px;line-height:1.85;color:#a6adc8;
+  overflow-x:auto;
+}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media(min-width:768px){
+  .nav-version{display:flex}
+  .nav-cta    {display:flex}
+  .quick-grid {grid-template-columns:repeat(2,1fr)}
+}
+@media(min-width:1060px){
+  .sidebar{transform:translateX(0);position:sticky;top:var(--nav-h);height:calc(100vh - var(--nav-h));transition:none}
+  .nav-menu-btn{display:none}
+  .sidebar-overlay{display:none!important}
+  .main{padding-left:0}
+  .nav-search{display:flex}
+  .nav-search-kbd{display:flex}
+  .quick-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(min-width:1280px){
+  .toc{display:block}
+  .content-wrap{padding:48px 40px 80px}
+  .quick-grid{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════ TOP NAV ════════════════════════ -->
+<nav class="topnav">
+  <button class="nav-menu-btn" id="menuBtn"><span></span><span></span><span></span></button>
+
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">⚡</div>
+    <span class="nav-logo-name">DevDocs Pro</span>
+  </a>
+
+  <div class="nav-divider"></div>
+  <span class="nav-version">v3.0</span>
+
+  <div class="nav-search" style="display:none" id="navSearch">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" placeholder="Search docs…"/>
+    <div class="nav-search-kbd"><span class="kbd">⌘</span><span class="kbd">K</span></div>
+  </div>
+
+  <div class="nav-right">
+    <button class="icon-btn" id="themeBtn" title="Toggle theme">🌙</button>
+    <a href="#" class="nav-cta">Get started</a>
+  </div>
+</nav>
+
+<!-- ═══════════════ SIDEBAR OVERLAY ════════════════ -->
+<div class="sidebar-overlay" id="overlay"></div>
+
+<!-- ═══════════════════════ LAYOUT ═════════════════════════ -->
+<div class="layout">
+
+  <!-- ──────── SIDEBAR ──────── -->
+  <aside class="sidebar" id="sidebar">
+
+    <div class="sb-section">
+      <div class="sb-section-label" onclick="toggleSection(this)">
+        Getting Started
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="sb-links">
+        <button class="sb-link active" onclick="loadPage('intro')">Introduction</button>
+        <button class="sb-link" onclick="loadPage('quickstart')">Quickstart</button>
+        <button class="sb-link" onclick="loadPage('install')">Installation</button>
+        <button class="sb-link" onclick="loadPage('auth')">Authentication</button>
+      </div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-section-label" onclick="toggleSection(this)">
+        Core Concepts
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="sb-links">
+        <button class="sb-link" onclick="loadPage('projects')">Projects</button>
+        <button class="sb-link" onclick="loadPage('pages')">Pages & Content</button>
+        <button class="sb-link" onclick="loadPage('versioning')">Versioning <span class="sb-badge badge-new">New</span></button>
+        <button class="sb-link" onclick="loadPage('search')">Search API</button>
+      </div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-section-label" onclick="toggleSection(this)">
+        API Reference
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="sb-links">
+        <button class="sb-link" onclick="loadPage('api-overview')">Overview</button>
+        <button class="sb-link" onclick="loadPage('api-projects')">Projects API</button>
+        <button class="sb-link" onclick="loadPage('api-pages')">Pages API</button>
+        <button class="sb-link" onclick="loadPage('api-search')">Search API</button>
+        <button class="sb-link" onclick="loadPage('webhooks')">Webhooks <span class="sb-badge badge-beta">Beta</span></button>
+      </div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-section-label" onclick="toggleSection(this)">
+        SDKs
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="sb-links">
+        <button class="sb-link" onclick="loadPage('sdk-ts')">TypeScript</button>
+        <button class="sb-link" onclick="loadPage('sdk-python')">Python</button>
+        <button class="sb-link" onclick="loadPage('sdk-go')">Go</button>
+        <button class="sb-link" onclick="loadPage('sdk-other')">Other Languages</button>
+      </div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-section-label" onclick="toggleSection(this)">
+        Guides
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="sb-links">
+        <button class="sb-link" onclick="loadPage('guide-deploy')">Deployment</button>
+        <button class="sb-link" onclick="loadPage('guide-ci')">CI/CD Integration</button>
+        <button class="sb-link" onclick="loadPage('guide-custom')">Custom Domains</button>
+        <button class="sb-link" onclick="loadPage('guide-sso')">SSO & Access</button>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ──────── MAIN ──────── -->
+  <main class="main" id="mainContent">
+    <div class="content-wrap">
+
+      <!-- BREADCRUMB -->
+      <div class="breadcrumb">
+        <a href="#">Docs</a>
+        <span class="sep">›</span>
+        <a href="#">Getting Started</a>
+        <span class="sep">›</span>
+        <span>Introduction</span>
+      </div>
+
+      <!-- HERO -->
+      <div class="doc-hero">
+        <div class="doc-hero-eyebrow">Getting Started</div>
+        <h1>Welcome to DevDocs Pro</h1>
+        <p>The developer documentation platform that makes beautiful, searchable, production-grade API docs effortless. Up and running in under 3 minutes.</p>
+        <div class="doc-hero-actions">
+          <a href="#quickstart" class="btn-primary">Quickstart guide →</a>
+          <a href="#api" class="btn-secondary">API Reference</a>
+        </div>
+      </div>
+
+      <!-- QUICK LINKS -->
+      <div class="quick-grid">
+        <div class="quick-card" onclick="loadPage('quickstart')">
+          <div class="quick-card-icon" style="background:rgba(41,151,255,.1)">⚡</div>
+          <div><h3>Quickstart</h3><p>Ship your first docs in 3 minutes</p></div>
+        </div>
+        <div class="quick-card" onclick="loadPage('auth')">
+          <div class="quick-card-icon" style="background:rgba(191,90,242,.1)">🔑</div>
+          <div><h3>Authentication</h3><p>Bearer tokens, API keys, OAuth</p></div>
+        </div>
+        <div class="quick-card" onclick="loadPage('sdk-ts')">
+          <div class="quick-card-icon" style="background:rgba(48,209,88,.1)">📦</div>
+          <div><h3>TypeScript SDK</h3><p>Fully typed, zero config</p></div>
+        </div>
+        <div class="quick-card" onclick="loadPage('api-overview')">
+          <div class="quick-card-icon" style="background:rgba(255,214,10,.1)">🔌</div>
+          <div><h3>REST API</h3><p>Full API reference with examples</p></div>
+        </div>
+        <div class="quick-card" onclick="loadPage('guide-deploy')">
+          <div class="quick-card-icon" style="background:rgba(255,69,58,.1)">🚀</div>
+          <div><h3>Deploy</h3><p>Vercel, Netlify, self-hosted</p></div>
+        </div>
+        <div class="quick-card" onclick="loadPage('versioning')">
+          <div class="quick-card-icon" style="background:rgba(100,210,255,.1)">🗂️</div>
+          <div><h3>Versioning</h3><p>Multiple API versions, side-by-side</p></div>
+        </div>
+      </div>
+
+      <!-- PROSE SECTION -->
+      <div class="prose" id="pageBody">
+
+        <h2 id="overview">Overview</h2>
+        <p>DevDocs Pro is a <strong>documentation-as-code platform</strong> that auto-generates beautiful, searchable API docs from your OpenAPI spec. It handles hosting, versioning, search, and SDK generation — so you focus on building, not documenting.</p>
+
+        <div class="callout note">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <strong>Note</strong>
+            Looking for the changelog? Check out <a href="#">What's new in v3.0</a> for full details on the latest features including semantic search and the new Bento layout engine.
+          </div>
+        </div>
+
+        <h2 id="howitworks">How it works</h2>
+        <p>Connect your spec, configure your project, and deploy. DevDocs Pro parses your OpenAPI / AsyncAPI file and generates a fully interactive documentation portal with live code playgrounds.</p>
+
+        <div class="steps-list">
+          <div class="step-item">
+            <div class="step-badge">1</div>
+            <div class="step-body">
+              <h4>Connect your spec</h4>
+              <p>Point to your <code>openapi.json</code> or <code>openapi.yaml</code> file — local path or remote URL. DevDocs Pro supports OpenAPI 3.0, 3.1, and AsyncAPI 2.x.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-badge">2</div>
+            <div class="step-body">
+              <h4>Configure your project</h4>
+              <p>Set your project name, theme, custom domain, and access controls in <code>devdocs.config.ts</code>. Sane defaults mean you rarely need to touch it.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-badge">3</div>
+            <div class="step-body">
+              <h4>Deploy anywhere</h4>
+              <p>Push to production with <code>devdocs deploy</code>. Supports Vercel, Netlify, Cloudflare Pages, or any Node.js host. CI/CD integration included.</p>
+            </div>
+          </div>
+        </div>
+
+        <h2 id="installation">Installation</h2>
+        <p>Install the CLI globally and the SDK as a dependency:</p>
+
+        <div class="tab-group">
+          <div class="tab-bar">
+            <button class="tab-btn active" onclick="tabSwitch(event,'npm')">npm</button>
+            <button class="tab-btn" onclick="tabSwitch(event,'pnpm')">pnpm</button>
+            <button class="tab-btn" onclick="tabSwitch(event,'yarn')">yarn</button>
+            <button class="tab-btn" onclick="tabSwitch(event,'bun')">bun</button>
+          </div>
+          <div id="tab-npm" class="tab-panel active">
+            <div class="code-block">
+              <pre><span class="t-fn">npm</span> install <span class="t-op">-g</span> @devdocs/cli
+<span class="t-fn">npm</span> install @devdocs/sdk</pre>
+            </div>
+          </div>
+          <div id="tab-pnpm" class="tab-panel">
+            <div class="code-block"><pre><span class="t-fn">pnpm</span> add <span class="t-op">-g</span> @devdocs/cli
+<span class="t-fn">pnpm</span> add @devdocs/sdk</pre></div>
+          </div>
+          <div id="tab-yarn" class="tab-panel">
+            <div class="code-block"><pre><span class="t-fn">yarn</span> global add @devdocs/cli
+<span class="t-fn">yarn</span> add @devdocs/sdk</pre></div>
+          </div>
+          <div id="tab-bun" class="tab-panel">
+            <div class="code-block"><pre><span class="t-fn">bun</span> add <span class="t-op">-g</span> @devdocs/cli
+<span class="t-fn">bun</span> add @devdocs/sdk</pre></div>
+          </div>
+        </div>
+
+        <h2 id="authentication">Authentication</h2>
+        <p>All API requests require a Bearer token. Generate yours from the <a href="#">dashboard</a>.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots">
+              <div class="code-dot" style="background:#ff5f57"></div>
+              <div class="code-dot" style="background:#febc2e"></div>
+              <div class="code-dot" style="background:#28c840"></div>
+            </div>
+            <span class="code-file">auth.ts</span>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
+              <span class="code-lang">TypeScript</span>
+              <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+            </div>
+          </div>
+          <pre><span class="t-kw">import</span> { DevDocs } <span class="t-kw">from</span> <span class="t-str">'@devdocs/sdk'</span>
+
+<span class="t-cm">// Initialize with your API token</span>
+<span class="t-kw">const</span> client = <span class="t-kw">new</span> <span class="t-fn">DevDocs</span>({
+  token: process.env.<span class="t-cls">DEVDOCS_TOKEN</span>,   <span class="t-cm">// required</span>
+  version: <span class="t-str">'v3'</span>,                       <span class="t-cm">// default: latest</span>
+  timeout: <span class="t-num">10_000</span>,                    <span class="t-cm">// ms, default: 30s</span>
+  retries: <span class="t-num">3</span>,                          <span class="t-cm">// auto-retry on 5xx</span>
+})</pre>
+        </div>
+
+        <div class="callout tip">
+          <span class="callout-icon">✅</span>
+          <div class="callout-body">
+            <strong>Best practice</strong>
+            Store your token in an environment variable. Never commit it to source control. Use <code>.env.local</code> locally and your CI/CD secret manager in production.
+          </div>
+        </div>
+
+        <h2 id="your-first-call">Your first API call</h2>
+        <p>List your projects and fetch a specific page:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots">
+              <div class="code-dot" style="background:#ff5f57"></div>
+              <div class="code-dot" style="background:#febc2e"></div>
+              <div class="code-dot" style="background:#28c840"></div>
+            </div>
+            <span class="code-file">example.ts</span>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
+              <span class="code-lang">TypeScript</span>
+              <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+            </div>
+          </div>
+          <pre><span class="t-cm">// List all projects</span>
+<span class="t-kw">const</span> projects = <span class="t-kw">await</span> client.projects.<span class="t-fn">list</span>({ limit: <span class="t-num">10</span> })
+console.<span class="t-fn">log</span>(projects.data) <span class="t-cm">// Project[]</span>
+
+<span class="t-cm">// Fetch a specific page</span>
+<span class="t-kw">const</span> page = <span class="t-kw">await</span> client.pages.<span class="t-fn">get</span>(<span class="t-str">'proj_abc123'</span>, <span class="t-str">'getting-started'</span>)
+console.<span class="t-fn">log</span>(page.title)   <span class="t-cm">// "Getting Started"</span>
+console.<span class="t-fn">log</span>(page.content)  <span class="t-cm">// MDX string</span>
+
+<span class="t-cm">// Search across all docs</span>
+<span class="t-kw">const</span> results = <span class="t-kw">await</span> client.search.<span class="t-fn">query</span>({
+  q: <span class="t-str">'authentication'</span>,
+  limit: <span class="t-num">5</span>,
+  projectId: <span class="t-str">'proj_abc123'</span>  <span class="t-cm">// optional filter</span>
+})
+results.data.<span class="t-fn">forEach</span>(r => console.<span class="t-fn">log</span>(r.title, r.score))</pre>
+        </div>
+
+        <p>Response looks like this:</p>
+
+        <div class="response-block">
+          <div class="response-status">
+            <span class="status-dot"></span>
+            <span class="status-code">200 OK</span>
+            <span style="margin-left:auto;font-weight:400;color:rgba(255,255,255,.3)">12ms</span>
+          </div>
+          <pre>{
+  <span class="t-op">"data"</span>: [
+    {
+      <span class="t-op">"id"</span>:    <span class="t-str">"proj_abc123"</span>,
+      <span class="t-op">"name"</span>:  <span class="t-str">"My API Docs"</span>,
+      <span class="t-op">"slug"</span>:  <span class="t-str">"my-api-docs"</span>,
+      <span class="t-op">"pages"</span>: <span class="t-num">24</span>,
+      <span class="t-op">"plan"</span>:  <span class="t-str">"pro"</span>
+    }
+  ],
+  <span class="t-op">"meta"</span>: { <span class="t-op">"total"</span>: <span class="t-num">1</span>, <span class="t-op">"limit"</span>: <span class="t-num">10</span> }
+}</pre>
+        </div>
+
+        <h2 id="parameters">SDK Parameters</h2>
+
+        <table class="param-table">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Type</th>
+              <th>Required</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>token</code></td>
+              <td><span class="param-type">string</span></td>
+              <td><span class="param-required">Required</span></td>
+              <td>Your API token from the dashboard</td>
+            </tr>
+            <tr>
+              <td><code>version</code></td>
+              <td><span class="param-type">string</span></td>
+              <td><span class="param-optional">Optional</span></td>
+              <td>API version. Defaults to <code>"v3"</code></td>
+            </tr>
+            <tr>
+              <td><code>timeout</code></td>
+              <td><span class="param-type">number</span></td>
+              <td><span class="param-optional">Optional</span></td>
+              <td>Request timeout in ms. Default <code>30000</code></td>
+            </tr>
+            <tr>
+              <td><code>retries</code></td>
+              <td><span class="param-type">number</span></td>
+              <td><span class="param-optional">Optional</span></td>
+              <td>Auto-retry count on 5xx errors. Default <code>3</code></td>
+            </tr>
+            <tr>
+              <td><code>baseUrl</code></td>
+              <td><span class="param-type">string</span></td>
+              <td><span class="param-optional">Optional</span></td>
+              <td>Override the base URL (for self-hosted)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <strong>Rate limits</strong>
+            The free plan is limited to 1,000 requests/day. Pro plan gets 100,000/day. Exceeding limits returns a <code>429 Too Many Requests</code> response with a <code>Retry-After</code> header.
+          </div>
+        </div>
+
+        <h2 id="next-steps">Next steps</h2>
+        <ul>
+          <li>Read the <a href="#">API Reference</a> for full endpoint documentation</li>
+          <li>Set up <a href="#">CI/CD integration</a> to auto-deploy docs on push</li>
+          <li>Configure <a href="#">custom domains</a> for your docs portal</li>
+          <li>Enable <a href="#">SSO</a> for private documentation</li>
+        </ul>
+
+      </div><!-- /.prose -->
+
+      <!-- PREV / NEXT -->
+      <div class="page-nav">
+        <div class="page-nav-btn">
+          <div class="page-nav-label">← Previous</div>
+          <div class="page-nav-title">Overview</div>
+        </div>
+        <div class="page-nav-btn next">
+          <div class="page-nav-label">Next →</div>
+          <div class="page-nav-title">Quickstart Guide</div>
+        </div>
+      </div>
+
+    </div><!-- /.content-wrap -->
+  </main><!-- /.main -->
+
+  <!-- ──────── TOC ──────── -->
+  <div class="toc">
+    <div class="toc-title">On this page</div>
+    <a class="toc-link active" href="#overview">Overview</a>
+    <a class="toc-link" href="#howitworks">How it works</a>
+    <a class="toc-link" href="#installation">Installation</a>
+    <a class="toc-link h3" href="#authentication">Authentication</a>
+    <a class="toc-link h3" href="#your-first-call">Your first API call</a>
+    <a class="toc-link h3" href="#parameters">SDK Parameters</a>
+    <a class="toc-link" href="#next-steps">Next steps</a>
+  </div>
+
+</div><!-- /.layout -->
+
+<script>
+/* ── sidebar toggle ── */
+const menuBtn = document.getElementById('menuBtn')
+const sidebar = document.getElementById('sidebar')
+const overlay = document.getElementById('overlay')
+
+menuBtn.addEventListener('click', () => {
+  const open = sidebar.classList.toggle('open')
+  menuBtn.classList.toggle('open', open)
+  overlay.classList.toggle('visible', open)
+})
+overlay.addEventListener('click', () => {
+  sidebar.classList.remove('open')
+  menuBtn.classList.remove('open')
+  overlay.classList.remove('visible')
+})
+
+/* ── section collapse ── */
+function toggleSection(label) {
+  label.closest('.sb-section').classList.toggle('collapsed')
+}
+
+/* ── page nav (mock) ── */
+function loadPage(page) {
+  document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'))
+  event.target.classList.add('active')
+}
+
+/* ── tabs ── */
+function tabSwitch(e, id) {
+  const group = e.target.closest('.tab-group')
+  group.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'))
+  group.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'))
+  e.target.classList.add('active')
+  group.querySelector('#tab-' + id).classList.add('active')
+}
+
+/* ── copy ── */
+function copyBlock(btn) {
+  const pre = btn.closest('.code-block').querySelector('pre')
+  navigator.clipboard.writeText(pre.innerText).then(() => {
+    btn.textContent = 'Copied ✓'
+    setTimeout(() => btn.textContent = 'Copy', 2200)
+  })
+}
+
+/* ── theme ── */
+const themeBtn = document.getElementById('themeBtn')
+themeBtn.addEventListener('click', () => {
+  const dark = document.documentElement.getAttribute('data-theme') === 'dark'
+  document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark')
+  themeBtn.textContent = dark ? '☀️' : '🌙'
+})
+
+/* ── show search on desktop ── */
+function checkWidth() {
+  const s = document.getElementById('navSearch')
+  s.style.display = window.innerWidth >= 640 ? 'flex' : 'none'
+}
+checkWidth()
+window.addEventListener('resize', checkWidth)
+
+/* ── TOC active on scroll ── */
+const tocLinks = document.querySelectorAll('.toc-link')
+const headings = document.querySelectorAll('.prose h2, .prose h3')
+window.addEventListener('scroll', () => {
+  let active = ''
+  headings.forEach(h => { if(window.scrollY >= h.offsetTop - 100) active = h.id })
+  tocLinks.forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + active)
+  })
+}, { passive: true })
+</script>
+</body>
+</html>
