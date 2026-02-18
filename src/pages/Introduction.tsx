@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import CodeBlock from '../components/CodeBlock';
 import Callout from '../components/Callout';
 
@@ -11,17 +12,64 @@ const QUICK = [
 ];
 
 export default function Introduction({ onNavigate }: { onNavigate:(id:string)=>void }) {
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+
+  /* Trigger gradient-text animation on mount */
+  useEffect(() => {
+    const el = headlineRef.current;
+    if (!el) return;
+    el.classList.add('hero-headline-animated');
+  }, []);
+
   return (
     <div className="animate-up">
 
       {/* ── Hero ── */}
-      <div className="page-hero">
+      <div className="page-hero page-hero-enhanced">
+        {/* Animated orb accent */}
+        <div className="hero-orb hero-orb-1" />
+        <div className="hero-orb hero-orb-2" />
+
         <div className="page-hero-tag">⬡ Getting Started</div>
-        <h1>Docs your team<br/>will actually read.</h1>
-        <p>DevDocs Pro turns your OpenAPI spec into a beautiful, searchable portal — in the time it takes to grab coffee. No templates to wrestle with.</p>
-        <div className="hero-btns">
-          <button className="btn-gold" onClick={() => onNavigate('quickstart')}>Quickstart guide →</button>
-          <button className="btn-outline" onClick={() => onNavigate('api-overview')}>API Reference</button>
+
+        <h1 ref={headlineRef} className="hero-headline">
+          <span className="hero-headline-gradient">Docs your team</span>
+          <br />
+          <span className="hero-headline-gradient hero-headline-gradient-2">will actually read.</span>
+        </h1>
+
+        <p className="hero-sub">
+          DevDocs Pro turns your OpenAPI spec into a beautiful, searchable portal —
+          in the time it takes to grab coffee. No templates to wrestle with.
+        </p>
+
+        <div className="hero-btns hero-btns-enhanced">
+          <button className="btn-gold btn-gold-cta" onClick={() => onNavigate('quickstart')}>
+            <span className="btn-cta-icon">▶</span>
+            Get Started
+          </button>
+          <button className="btn-outline btn-outline-enhanced" onClick={() => onNavigate('api-overview')}>
+            API Reference
+            <span style={{ fontSize:11, opacity:.7 }}>→</span>
+          </button>
+          <button className="btn-ghost" onClick={() => onNavigate('changelog')}>
+            What's new in v3.0 ✨
+          </button>
+        </div>
+
+        {/* Stat badges */}
+        <div className="hero-stats">
+          {[
+            ['50K+', 'developers'],
+            ['3 min', 'to first deploy'],
+            ['12', 'SDK languages'],
+            ['99.9%', 'uptime SLA'],
+          ].map(([val, lbl]) => (
+            <div key={lbl} className="hero-stat">
+              <span className="hero-stat-val">{val}</span>
+              <span className="hero-stat-lbl">{lbl}</span>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -166,6 +214,7 @@ results.data.forEach(r => console.log(r.title, r.score))`} />
           <li><a href="#" onClick={e=>{e.preventDefault();onNavigate('api-overview')}}>API Reference</a> — full endpoint docs</li>
           <li><a href="#" onClick={e=>{e.preventDefault();onNavigate('guide-deploy')}}>Deployment guide</a> — Vercel, Netlify, CI/CD</li>
           <li><a href="#" onClick={e=>{e.preventDefault();onNavigate('guide-sso')}}>SSO & Access</a> — private docs, team access</li>
+          <li><a href="#" onClick={e=>{e.preventDefault();onNavigate('changelog')}}>Changelog</a> — what's new in v3.0</li>
         </ul>
 
       </div>

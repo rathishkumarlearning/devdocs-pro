@@ -3,6 +3,16 @@ import { NAV } from '../data/docs';
 
 interface Props { open:boolean; activePage:string; onNavigate:(id:string)=>void; onClose:()=>void; }
 
+/* Section icons keyed by title */
+const SECTION_ICONS: Record<string, string> = {
+  'Getting Started': '🚀',
+  'Core Concepts':   '🧠',
+  'API Reference':   '⚡',
+  'SDKs':            '📦',
+  'Guides':          '📖',
+  'More':            '✦',
+};
+
 export default function Sidebar({ open, activePage, onNavigate }: Props) {
   const [collapsed, setCollapsed] = useState<Record<string,boolean>>({});
 
@@ -15,40 +25,61 @@ export default function Sidebar({ open, activePage, onNavigate }: Props) {
         <span style={{ marginLeft:'auto', fontSize:10, fontWeight:700, padding:'2px 8px', borderRadius:980, background:'var(--gold-dim)', color:'var(--gold)', border:'1px solid var(--gold-border)' }}>v3.0</span>
       </div>
 
-      {NAV.map(section => (
-        <div key={section.title} style={{ marginBottom:4 }}>
-          <button
-            className={`sb-section-btn${collapsed[section.title] ? ' collapsed' : ''}`}
-            onClick={() => setCollapsed(c => ({ ...c, [section.title]: !c[section.title] }))}
-          >
-            {section.title}
-            <svg width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-              <path d="M6 9l6 6 6-6"/>
-            </svg>
-          </button>
+      {NAV.map((section, sectionIdx) => {
+        const isOpen = !collapsed[section.title];
+        const icon   = SECTION_ICONS[section.title] ?? '▸';
+        const isFirst = sectionIdx === 0;
 
-          {!collapsed[section.title] && (
-            <div style={{ display:'flex', flexDirection:'column', gap:0, marginBottom:4 }}>
-              {section.items.map(item => {
-                const active = activePage === item.id;
-                return (
-                  <button
-                    key={item.id}
-                    className={`sb-item${active ? ' active' : ''}`}
-                    onClick={() => onNavigate(item.id)}
-                  >
-                    <div className="sb-dot" />
-                    {item.label}
-                    {item.badge && (
-                      <span className={`sb-item-badge badge-${item.badge}`}>{item.badge}</span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      ))}
+        return (
+          <div key={section.title} className="sb-section-group" style={{ marginBottom: 2 }}>
+
+            {/* Subtle divider between sections (skip the first one) */}
+            {!isFirst && (
+              <div className="sb-section-divider" />
+            )}
+
+            <button
+              className={`sb-section-btn${isOpen ? '' : ' collapsed'}`}
+              onClick={() => setCollapsed(c => ({ ...c, [section.title]: !c[section.title] }))}
+            >
+              <span className="sb-section-inner">
+                <span className="sb-section-icon">{icon}</span>
+                <span>{section.title}</span>
+              </span>
+              <svg
+                className="sb-section-chevron"
+                width="10" height="10" fill="none"
+                stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"
+                style={{ transform: isOpen ? 'rotate(0deg)' : 'rotate(-90deg)', transition:'transform .2s' }}
+              >
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </button>
+
+            {isOpen && (
+              <div className="sb-section-items">
+                {section.items.map((item, itemIdx) => {
+                  const active = activePage === item.id;
+                  const isLast = itemIdx === section.items.length - 1;
+                  return (
+                    <button
+                      key={item.id}
+                      className={`sb-item${active ? ' active' : ''}${isLast ? ' sb-item-last' : ''}`}
+                      onClick={() => onNavigate(item.id)}
+                    >
+                      <div className="sb-dot" />
+                      {item.label}
+                      {item.badge && (
+                        <span className={`sb-item-badge badge-${item.badge}`}>{item.badge}</span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        );
+      })}
 
       {/* bottom help card */}
       <div style={{ margin:'20px 4px 0', background:'var(--gold-dim)', border:'1px solid var(--gold-border)', borderRadius:12, padding:'14px 14px' }}>

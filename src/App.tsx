@@ -3,6 +3,7 @@ import Sidebar from './components/Sidebar';
 import Introduction from './pages/Introduction';
 import Quickstart from './pages/Quickstart';
 import ApiReference from './pages/ApiReference';
+import Changelog from './pages/Changelog';
 import { NAV } from './data/docs';
 import { COPY } from './data/copy';
 
@@ -40,6 +41,7 @@ const PAGE_TOC: Record<string, { id:string; label:string }[]> = {
     { id:'endpoints',   label:'Endpoints' },
     { id:'error-codes', label:'Error codes' },
   ],
+  changelog: [],
 };
 
 /* ── Coming soon placeholder ─────────────────────────────── */
@@ -236,6 +238,7 @@ export default function App() {
       case 'introduction': return <Introduction onNavigate={navigate} />;
       case 'quickstart':   return <Quickstart   onNavigate={navigate} />;
       case 'api-overview': return <ApiReference onNavigate={navigate} />;
+      case 'changelog':    return <Changelog    onNavigate={navigate} />;
       default:             return <ComingSoon   id={activePage} />;
     }
   };
