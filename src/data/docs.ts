@@ -55,4 +55,10 @@ export const NAV: NavSection[] = [
       { id: 'guide-sso',    label: 'SSO & Access' },
     ],
   },
+  {
+    title: 'More',
+    items: [
+      { id: 'changelog', label: 'Changelog', badge: 'new' },
+    ],
+  },
 ];

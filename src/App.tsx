@@ -3,6 +3,7 @@ import Sidebar from './components/Sidebar';
 import Introduction from './pages/Introduction';
 import Quickstart from './pages/Quickstart';
 import ApiReference from './pages/ApiReference';
+import Changelog from './pages/Changelog';
 import SearchModal from './components/SearchModal';
 import { NAV } from './data/docs';
 import { COPY } from './data/copy';
@@ -25,6 +26,7 @@ const PAGE_TOC: Record<string, {id:string;label:string}[]> = {
     { id:'firstcall',label:'First API call' },{ id:'sdk-params',label:'SDK parameters' },
     { id:'nextsteps',label:'Next steps' },
   ],
+  changelog: [],
   quickstart:   [{ id:'step-1',label:'Step 1 — Install' },{ id:'step-2',label:'Step 2 — Initialize' },{ id:'step-3',label:'Step 3 — Preview' },{ id:'step-4',label:'Step 4 — Deploy' }],
   'api-overview': [{ id:'base-url',label:'Base URL' },{ id:'auth',label:'Authentication' },{ id:'endpoints',label:'Endpoints' },{ id:'error-codes',label:'Error codes' }],
 };
@@ -168,6 +170,7 @@ export default function App() {
       case 'introduction': return <Introduction onNavigate={navigate} />;
       case 'quickstart':   return <Quickstart   onNavigate={navigate} />;
       case 'api-overview': return <ApiReference onNavigate={navigate} />;
+      case 'changelog':    return <Changelog    onNavigate={navigate} />;
       default:             return <ComingSoon   id={activePage} />;
     }
   };

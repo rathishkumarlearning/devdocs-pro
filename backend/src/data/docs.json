@@ -1,8 +1,62 @@
 [
-  { "id":"introduction",  "title":"Introduction",     "section":"Getting Started", "description":"Welcome to DevDocs Pro. Up and running in 3 minutes.", "tags":["overview","intro","start"], "order":1 },
-  { "id":"quickstart",    "title":"Quickstart",       "section":"Getting Started", "description":"Ship your first docs in 3 minutes.",                   "tags":["install","setup","deploy"], "order":2 },
-  { "id":"authentication","title":"Authentication",   "section":"Getting Started", "description":"Bearer tokens, API keys, and OAuth.",                  "tags":["auth","bearer","security"], "order":3 },
-  { "id":"api-overview",  "title":"API Overview",     "section":"API Reference",   "description":"Clean REST API reference with live examples.",          "tags":["api","rest","endpoints"],   "order":4 },
-  { "id":"sdk-ts",        "title":"TypeScript SDK",   "section":"SDKs",            "description":"Fully typed SDK, zero config.",                        "tags":["sdk","typescript","npm"],   "order":5 },
-  { "id":"guide-deploy",  "title":"Deployment",       "section":"Guides",          "description":"Deploy to Vercel, Netlify, or self-hosted.",            "tags":["deploy","vercel","ci"],     "order":6 }
+  {
+    "id": "introduction",
+    "slug": "introduction",
+    "title": "Introduction",
+    "section": "Getting Started",
+    "description": "Welcome to DevDocs Pro. Get up and running in under 3 minutes.",
+    "tags": ["overview", "quickstart"],
+    "content": "DevDocs Pro is a documentation-as-code platform that auto-generates beautiful, searchable API docs from your OpenAPI spec.",
+    "order": 1
+  },
+  {
+    "id": "quickstart",
+    "slug": "quickstart",
+    "title": "Quickstart",
+    "section": "Getting Started",
+    "description": "Ship your first docs in 3 minutes.",
+    "tags": ["install", "setup", "deploy"],
+    "content": "From zero to a fully interactive, searchable API portal in under 3 minutes.",
+    "order": 2
+  },
+  {
+    "id": "authentication",
+    "slug": "authentication",
+    "title": "Authentication",
+    "section": "Getting Started",
+    "description": "Bearer tokens, API keys, and OAuth flows.",
+    "tags": ["auth", "security", "bearer", "oauth"],
+    "content": "All API requests require a Bearer token passed in the Authorization header.",
+    "order": 3
+  },
+  {
+    "id": "api-overview",
+    "slug": "api-overview",
+    "title": "API Overview",
+    "section": "API Reference",
+    "description": "Full REST API reference with examples.",
+    "tags": ["api", "rest", "endpoints"],
+    "content": "DevDocs Pro exposes a clean REST API at api.devdocs.pro/v3.",
+    "order": 4
+  },
+  {
+    "id": "sdk-ts",
+    "slug": "sdk-typescript",
+    "title": "TypeScript SDK",
+    "section": "SDKs",
+    "description": "Fully typed TypeScript SDK with zero config.",
+    "tags": ["sdk", "typescript", "npm"],
+    "content": "The TypeScript SDK provides fully typed access to all DevDocs Pro API endpoints.",
+    "order": 5
+  },
+  {
+    "id": "guide-deploy",
+    "slug": "deployment",
+    "title": "Deployment",
+    "section": "Guides",
+    "description": "Deploy to Vercel, Netlify, or self-hosted.",
+    "tags": ["deploy", "vercel", "netlify", "ci"],
+    "content": "Deploy your docs to any platform with a single command.",
+    "order": 6
+  }
 ]
