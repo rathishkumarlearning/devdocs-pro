@@ -4,6 +4,14 @@ import Introduction from './pages/Introduction';
 import Quickstart from './pages/Quickstart';
 import ApiReference from './pages/ApiReference';
 import Changelog from './pages/Changelog';
+import Installation from './pages/Installation';
+import Authentication from './pages/Authentication';
+import SdkTypeScript from './pages/SdkTypeScript';
+import DeploymentGuide from './pages/DeploymentGuide';
+import Projects from './pages/Projects';
+import PagesContent from './pages/PagesContent';
+import Versioning from './pages/Versioning';
+import SearchApiDocs from './pages/SearchApiDocs';
 import SearchModal from './components/SearchModal';
 import { NAV } from './data/docs';
 import { COPY } from './data/copy';
@@ -29,6 +37,70 @@ const PAGE_TOC: Record<string, {id:string;label:string}[]> = {
   changelog: [],
   quickstart:   [{ id:'step-1',label:'Step 1 — Install' },{ id:'step-2',label:'Step 2 — Initialize' },{ id:'step-3',label:'Step 3 — Preview' },{ id:'step-4',label:'Step 4 — Deploy' }],
   'api-overview': [{ id:'base-url',label:'Base URL' },{ id:'auth',label:'Authentication' },{ id:'endpoints',label:'Endpoints' },{ id:'error-codes',label:'Error codes' }],
+  installation: [
+    { id:'install-cli',label:'Install CLI' },{ id:'install-sdk',label:'Install SDK' },
+    { id:'init-project',label:'Init project' },{ id:'config-file',label:'Config file' },
+    { id:'local-preview',label:'Local preview' },{ id:'troubleshooting',label:'Troubleshooting' },
+  ],
+  authentication: [
+    { id:'api-key',label:'API Key' },{ id:'token-scopes',label:'Token scopes' },
+    { id:'oauth',label:'OAuth 2.0' },{ id:'oauth-code',label:'Auth Code + PKCE' },
+    { id:'oauth-cc',label:'Client Credentials' },{ id:'sso',label:'SSO & SAML' },
+    { id:'token-refresh',label:'Token refresh' },{ id:'auth-errors',label:'Error codes' },
+  ],
+  'sdk-ts': [
+    { id:'installation',label:'Installation' },{ id:'init',label:'Initialisation' },
+    { id:'projects',label:'Projects' },{ id:'pages',label:'Pages' },
+    { id:'search',label:'Search' },{ id:'versioning',label:'Versioning' },
+    { id:'webhooks',label:'Webhooks' },{ id:'errors',label:'Error handling' },
+    { id:'pagination',label:'Pagination' },
+  ],
+  'guide-deploy': [
+    { id:'build',label:'Build step' },{ id:'vercel',label:'Vercel' },
+    { id:'netlify',label:'Netlify' },{ id:'cloudflare',label:'Cloudflare Pages' },
+    { id:'docker',label:'Docker' },{ id:'node-server',label:'Node.js' },
+    { id:'cicd',label:'CI / CD' },{ id:'custom-domain',label:'Custom domains' },
+  ],
+  projects: [
+    { id:'what-is',  label:'What is a Project?' },
+    { id:'create',   label:'Creating a Project' },
+    { id:'config',   label:'devdocs.config.ts' },
+    { id:'structure',label:'Project Structure' },
+    { id:'members',  label:'Members & Roles' },
+    { id:'api-keys', label:'API Keys' },
+    { id:'delete',   label:'Deleting a Project' },
+  ],
+  pages: [
+    { id:'anatomy',    label:'Anatomy of a Page' },
+    { id:'frontmatter',label:'Frontmatter Reference' },
+    { id:'components', label:'Built-in Components' },
+    { id:'naming',     label:'File Naming & URLs' },
+    { id:'assets',     label:'Images & Assets' },
+    { id:'links',      label:'Linking Between Pages' },
+    { id:'variables',  label:'Content Variables' },
+    { id:'linting',    label:'Content Linting' },
+  ],
+  versioning: [
+    { id:'how-it-works',   label:'How Versioning Works' },
+    { id:'create-version', label:'Creating a Version' },
+    { id:'urls',           label:'URL Structure' },
+    { id:'inheritance',    label:'Page Inheritance' },
+    { id:'deprecate',      label:'Archiving Versions' },
+    { id:'switcher',       label:'Version Switcher UI' },
+    { id:'api-cli',        label:'API & CLI' },
+    { id:'best-practices', label:'Best Practices' },
+  ],
+  search: [
+    { id:'how-it-works', label:'How Search Works' },
+    { id:'quickstart',   label:'Quick Start' },
+    { id:'response',     label:'Response Format' },
+    { id:'parameters',   label:'Query Parameters' },
+    { id:'autocomplete', label:'Autocomplete' },
+    { id:'indexing',     label:'Controlling Indexing' },
+    { id:'external',     label:'Using Algolia' },
+    { id:'rate-limits',  label:'Rate Limits' },
+    { id:'analytics',    label:'Search Analytics' },
+  ],
 };
 
 function ComingSoon({ id }: { id:string }) {
@@ -167,11 +239,19 @@ export default function App() {
 
   const renderPage = () => {
     switch (activePage) {
-      case 'introduction': return <Introduction onNavigate={navigate} />;
-      case 'quickstart':   return <Quickstart   onNavigate={navigate} />;
-      case 'api-overview': return <ApiReference onNavigate={navigate} />;
-      case 'changelog':    return <Changelog    onNavigate={navigate} />;
-      default:             return <ComingSoon   id={activePage} />;
+      case 'introduction':  return <Introduction    onNavigate={navigate} />;
+      case 'quickstart':    return <Quickstart      onNavigate={navigate} />;
+      case 'api-overview':  return <ApiReference    onNavigate={navigate} />;
+      case 'changelog':     return <Changelog       onNavigate={navigate} />;
+      case 'installation':  return <Installation    onNavigate={navigate} />;
+      case 'authentication':return <Authentication  onNavigate={navigate} />;
+      case 'sdk-ts':        return <SdkTypeScript   onNavigate={navigate} />;
+      case 'guide-deploy':  return <DeploymentGuide onNavigate={navigate} />;
+      case 'projects':      return <Projects         onNavigate={navigate} />;
+      case 'pages':         return <PagesContent     onNavigate={navigate} />;
+      case 'versioning':    return <Versioning       onNavigate={navigate} />;
+      case 'search':        return <SearchApiDocs    onNavigate={navigate} />;
+      default:              return <ComingSoon        id={activePage} />;
     }
   };
 
