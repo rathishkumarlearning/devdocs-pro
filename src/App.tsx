@@ -8,6 +8,10 @@ import Installation from './pages/Installation';
 import Authentication from './pages/Authentication';
 import SdkTypeScript from './pages/SdkTypeScript';
 import DeploymentGuide from './pages/DeploymentGuide';
+import Projects from './pages/Projects';
+import PagesContent from './pages/PagesContent';
+import Versioning from './pages/Versioning';
+import SearchApiDocs from './pages/SearchApiDocs';
 import SearchModal from './components/SearchModal';
 import { NAV } from './data/docs';
 import { COPY } from './data/copy';
@@ -56,6 +60,46 @@ const PAGE_TOC: Record<string, {id:string;label:string}[]> = {
     { id:'netlify',label:'Netlify' },{ id:'cloudflare',label:'Cloudflare Pages' },
     { id:'docker',label:'Docker' },{ id:'node-server',label:'Node.js' },
     { id:'cicd',label:'CI / CD' },{ id:'custom-domain',label:'Custom domains' },
+  ],
+  projects: [
+    { id:'what-is',  label:'What is a Project?' },
+    { id:'create',   label:'Creating a Project' },
+    { id:'config',   label:'devdocs.config.ts' },
+    { id:'structure',label:'Project Structure' },
+    { id:'members',  label:'Members & Roles' },
+    { id:'api-keys', label:'API Keys' },
+    { id:'delete',   label:'Deleting a Project' },
+  ],
+  pages: [
+    { id:'anatomy',    label:'Anatomy of a Page' },
+    { id:'frontmatter',label:'Frontmatter Reference' },
+    { id:'components', label:'Built-in Components' },
+    { id:'naming',     label:'File Naming & URLs' },
+    { id:'assets',     label:'Images & Assets' },
+    { id:'links',      label:'Linking Between Pages' },
+    { id:'variables',  label:'Content Variables' },
+    { id:'linting',    label:'Content Linting' },
+  ],
+  versioning: [
+    { id:'how-it-works',   label:'How Versioning Works' },
+    { id:'create-version', label:'Creating a Version' },
+    { id:'urls',           label:'URL Structure' },
+    { id:'inheritance',    label:'Page Inheritance' },
+    { id:'deprecate',      label:'Archiving Versions' },
+    { id:'switcher',       label:'Version Switcher UI' },
+    { id:'api-cli',        label:'API & CLI' },
+    { id:'best-practices', label:'Best Practices' },
+  ],
+  search: [
+    { id:'how-it-works', label:'How Search Works' },
+    { id:'quickstart',   label:'Quick Start' },
+    { id:'response',     label:'Response Format' },
+    { id:'parameters',   label:'Query Parameters' },
+    { id:'autocomplete', label:'Autocomplete' },
+    { id:'indexing',     label:'Controlling Indexing' },
+    { id:'external',     label:'Using Algolia' },
+    { id:'rate-limits',  label:'Rate Limits' },
+    { id:'analytics',    label:'Search Analytics' },
   ],
 };
 
@@ -203,7 +247,11 @@ export default function App() {
       case 'authentication':return <Authentication  onNavigate={navigate} />;
       case 'sdk-ts':        return <SdkTypeScript   onNavigate={navigate} />;
       case 'guide-deploy':  return <DeploymentGuide onNavigate={navigate} />;
-      default:              return <ComingSoon       id={activePage} />;
+      case 'projects':      return <Projects         onNavigate={navigate} />;
+      case 'pages':         return <PagesContent     onNavigate={navigate} />;
+      case 'versioning':    return <Versioning       onNavigate={navigate} />;
+      case 'search':        return <SearchApiDocs    onNavigate={navigate} />;
+      default:              return <ComingSoon        id={activePage} />;
     }
   };
 
